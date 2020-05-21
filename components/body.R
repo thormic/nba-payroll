@@ -18,6 +18,13 @@ body <- dashboardBody(
         tabName = "dataset",
         fluidRow(
           box(
+            title = "Description",
+            includeMarkdown("include.md"),
+            width = 12
+          )
+        ),
+        fluidRow(
+          box(
             title = "Data controler",
             # Choose a column
             selectInput(
@@ -57,7 +64,25 @@ body <- dashboardBody(
       # Models
       ########################
       tabItem(
-        tabName = "models"
+        tabName = "models",
+          fluidRow(
+           box(
+             plotOutput("resBoxPlot"),
+             width = 12
+           ) 
+          ),
+        fluidRow(
+          box(
+            plotOutput("dropLossPlot"),
+            width = 12
+          ) 
+        ),
+        fluidRow(
+          box(
+            plotOutput("modelScatterPlot"),
+            width = 12
+          ) 
+        )
       ),
       
       ########################
