@@ -1,11 +1,11 @@
-library("gbm")
+library(gbm)
 library(readr)
-library("DALEX")
-library("ingredients")
-library("iBreakDown")
-library("ggplot2")
-library("scales")
-library("randomForest")
+library(DALEX)
+library(ingredients)
+library(iBreakDown)
+library(ggplot2)
+library(scales)
+library(randomForest)
 library(imputeTS)
 
 # read data
@@ -20,7 +20,10 @@ nba_sel["FT."] <- na_mean(nba_sel["FT."])
 
 # building gbm model to predict payroll
 # Type your own parameters for GBM/distribution
-nba_gbm <- gbm(pay ~ . , data = nba_sel[,-1], n.trees = 250, interaction.depth = 3)
+nba_gbm <- gbm(pay ~ . , 
+               data = nba_sel[,-1], 
+               n.trees = 250, 
+               interaction.depth = 3)
 
 # R2 of gbm 0.95
 model_performance(nba_gbm_exp)
@@ -35,7 +38,8 @@ nba_gbm_exp <- explain(nba_gbm,
 
 
 # building RandomForest model
-nba_rf <- randomForest(pay ~ . , data = nba_sel[,-1],)
+nba_rf <- randomForest(pay ~ .,
+                       data = nba_sel[,-1],)
 
 # explainer for rf
 nba_rf_exp <- explain(nba_rf, 
