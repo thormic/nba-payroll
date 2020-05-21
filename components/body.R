@@ -6,6 +6,9 @@
 # components as well.
 ###################
 body <- dashboardBody(
+    shinyDashboardThemes(
+      theme = "blue_gradient"
+    ),
     tabItems(
       
       ########################
