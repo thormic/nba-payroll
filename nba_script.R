@@ -86,7 +86,7 @@ plot(pdp_rf, geom = "profiles") +
 # Different variables to choose from
 new_observation <- nba_sel[358,]
 nba_cp_pg <- ingredients::ceteris_paribus(nba_gbm_exp, new_observation = new_observation, variables = "Age", variable_splits = list(Age = seq(18,45,0.1)))
-plot(nba_cp_pg)
+plot(nba_cp_pg) + geom_vline(xintercept = 22, linetype = "dotted", color = "blue")
 
 # Variables and how they affect certain players payroll
 # Box with choosable player

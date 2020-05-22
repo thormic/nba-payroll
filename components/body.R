@@ -96,7 +96,54 @@ body <- dashboardBody(
       # Compare/ show players
       ########################
       tabItem(
-        tabName = "player"
+        tabName = "player",
+          fluidRow(
+            box(
+              selectInput(
+                "playerChoice",
+                "Choose a player:",
+                choices = nba_sel[,1],
+                selected = "n"),
+              actionButton(
+                inputId = "submit_player",
+                label = "Submit player"),
+              width = 6
+            )
+          ),
+          fluidRow(
+            box(
+              textOutput("playerName"),
+              width = 4
+            ),
+            box(
+              textOutput("playerAge"),
+              width = 4
+            ),
+            box(
+              textOutput("playerPayroll"),
+              width = 4
+            )
+          ),
+          fluidRow(
+            box(
+              plotOutput("simulateVariable"),
+              width = 6
+            ),
+            box(
+              plotOutput("simulateVariable2"),
+              width = 6
+            ) 
+          ),
+          fluidRow(
+            box(
+              plotOutput("playerBreakdown"),
+              width = 6
+            ),
+            box(
+              plotOutput("playerShap"),
+              width = 6
+            )
+          )
       ),
       
       ########################

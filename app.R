@@ -18,6 +18,7 @@ library(scales)
 library(randomForest)
 library(imputeTS)
 library(dplyr)
+library(fields)
 
 source('./ui.R')
 source('./server.R')
