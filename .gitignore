@@ -5,6 +5,8 @@
 # Session Data files
 .RData
 
+!nba_workspace.RData
+
 # User-specific files
 .Ruserdata
 

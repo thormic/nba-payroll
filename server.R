@@ -5,6 +5,15 @@
 
 server <- function(input, output, session) {
   
+  ########################
+  # Data summary
+  ########################  
+
+  output$descText <- renderText({
+    
+  }
+  )
+  
   histPlot_df <- eventReactive(
     input$submit,
     {
@@ -38,4 +47,44 @@ server <- function(input, output, session) {
                    fixedColumns = list(leftColumns = 1)
                    )
   )
+  
+  ########################
+  # Models
+  ########################
+  
+  output$resBoxPlot <- renderPlot({
+    plot(nba_gbm_prf, nba_rf_prf, geom = "boxplot") +
+      scale_y_continuous("Absolute residuals in Dollars", labels = dollar_format(suffix = "$", prefix = "")) + 
+      ggtitle("Distributions of model absolute residuals")
+  })
+  
+  
+  output$dropLossPlot <- renderPlot({
+    plot(nba_gbm_part, nba_rf_part,
+         max_vars = 12, bar_width = 4, show_boxplots = FALSE) 
+  })
+  
+  
+  output$modelScatterPlot <- renderPlot({
+    plot(nba_gbm_md, nba_rf_md,
+         variable = "y", yvariable = "y_hat") +
+      scale_x_continuous("Value in Dollars", labels = dollar_format(suffix = "$", prefix = "")) + 
+      scale_y_continuous("Estimated value in Dollars", labels = dollar_format(suffix = "$", prefix = "")) + 
+      facet_wrap(~label) +
+      geom_abline(slope = 1) + theme(legend.position = "none") +
+      ggtitle("Diagnostics plot Predicted vs True target values", "")
+  })
+  
+  ########################
+  # Team
+  ########################
+  
+  ########################
+  # Compare/ show players
+  ########################
+  
+  ########################
+  # Create a player
+  ########################
+  
 }
