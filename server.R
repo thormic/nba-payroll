@@ -5,6 +5,10 @@
 
 server <- function(input, output, session) {
   
+  ########################
+  # Data summary
+  ########################  
+
   output$descText <- renderText({
     
   }
@@ -44,6 +48,9 @@ server <- function(input, output, session) {
                    )
   )
   
+  ########################
+  # Models
+  ########################
   
   output$resBoxPlot <- renderPlot({
     plot(nba_gbm_prf, nba_rf_prf, geom = "boxplot") +
@@ -67,4 +74,17 @@ server <- function(input, output, session) {
       geom_abline(slope = 1) + theme(legend.position = "none") +
       ggtitle("Diagnostics plot Predicted vs True target values", "")
   })
+  
+  ########################
+  # Team
+  ########################
+  
+  ########################
+  # Compare/ show players
+  ########################
+  
+  ########################
+  # Create a player
+  ########################
+  
 }
