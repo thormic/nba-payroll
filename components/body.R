@@ -6,6 +6,7 @@
 # components as well.
 ###################
 body <- dashboardBody(
+  tags$head(tags$style(HTML(".small-box {height: 100%}"))),
     shinyDashboardThemes(
       theme = "blue_gradient"
     ),
@@ -107,21 +108,21 @@ body <- dashboardBody(
               actionButton(
                 inputId = "submit_player",
                 label = "Submit player"),
-              width = 6
-            )
+              width = 4
+            ),
+            valueBoxOutput("playerName",
+                          width = 8
+              )
           ),
           fluidRow(
-            box(
-              textOutput("playerName"),
-              width = 4
+            valueBoxOutput("playerAge",
+                          width = 4
             ),
-            box(
-              textOutput("playerAge"),
-              width = 4
+            valueBoxOutput("playerGames",
+                          width = 4
             ),
-            box(
-              textOutput("playerPayroll"),
-              width = 4
+            valueBoxOutput("playerPayroll",
+                          width = 4
             )
           ),
           fluidRow(
@@ -136,12 +137,18 @@ body <- dashboardBody(
           ),
           fluidRow(
             box(
+              radioButtons("modelChoice", "Model:",
+                           c("GBM" = "gbm",
+                             "Random Forest" = "rf")),
+              width = 2
+            ),
+            box(
               plotOutput("playerBreakdown"),
-              width = 6
+              width = 5
             ),
             box(
               plotOutput("playerShap"),
-              width = 6
+              width = 5
             )
           )
       ),

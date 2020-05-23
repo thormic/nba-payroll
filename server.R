@@ -90,14 +90,37 @@ server <- function(input, output, session) {
   })
   
   # Statistics for player
-  output$playerName <- renderText({
-    paste("Name: ", player_df()[1])
+  output$playerName <- renderValueBox({
+    valueBox(
+      value = tags$p(player_df()[1], style = "font-size: 150%;"),
+      "",
+      icon = icon("user"),
+      color = "purple"
+    )
   })
-  output$playerAge <- renderText({
-    paste("Age: ", player_df()[4])
+  output$playerAge <- renderValueBox({
+    valueBox(
+      player_df()[4], 
+      "Age",
+      icon = icon("birthday-cake"),
+      color = "orange"
+    )
   })
-  output$playerPayroll <- renderText({
-    paste("Payroll: $", player_df()[2], sep = "")
+  output$playerGames <- renderValueBox({
+    valueBox(
+      player_df()[6], 
+      "Games played",
+      icon = icon("basketball-ball"),
+      color = "light-blue"
+    )
+  })
+  output$playerPayroll <- renderValueBox({
+    valueBox(
+      player_df()[2],
+      "Payroll", 
+      icon = icon("money-bill"),
+      color = "green"
+    )
   })
   
   # simulating case for this player observation with one variable changing
@@ -112,10 +135,18 @@ server <- function(input, output, session) {
     plot(nba_cp_pg) + geom_vline(xintercept = as.numeric(player_df()[32]), linetype = "dotted", color = "blue")
   })
   
+  # Switch button
+  model_chosen <- reactive({
+    switch(input$modelChoice,
+           gbm = nba_gbm_exp,
+           rf = nba_rf_exp,
+           nba_gbm_exp)
+  })
+  
   # Variables and how they affect certain players payroll
   # Box with choosable player
   output$playerBreakdown <- renderPlot({
-    nba_plr_bd <- break_down(nba_gbm_exp, new_observation = player_df())
+    nba_plr_bd <- break_down(model_chosen(), new_observation = player_df())
     nba_plr_bd$label = paste("Break Down for ", player_df()[1])
     plot(nba_plr_bd, digits = 0, max_features = 10) +  
       scale_y_continuous(labels = dollar_format(suffix = "$", prefix = ""), name = "Payroll", limits = 400000*c(1,100), breaks = 1000000*seq(0,45,8))
@@ -124,7 +155,7 @@ server <- function(input, output, session) {
 
   # Variables contribution to payroll for given player
   output$playerShap <- renderPlot({
-    nba_shap <- shap(nba_gbm_exp, new_observation = player_df())
+    nba_shap <- shap(model_chosen(), new_observation = player_df())
     plot(nba_shap, max_features = 10)
   })
 
