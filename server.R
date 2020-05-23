@@ -150,7 +150,7 @@ server <- function(input, output, session) {
     nba_plr_bd <- break_down(model_chosen(), new_observation = player_df())
     nba_plr_bd$label = paste("Break Down for ", player_df()[1])
     plot(nba_plr_bd, digits = 0, max_features = 10) +  
-      scale_y_continuous(labels = dollar_format(suffix = "$", prefix = ""), name = "Payroll", limits = 400000*c(1,100), breaks = 1000000*seq(0,45,8))
+      scale_y_continuous(labels = dollar_format(suffix = "$", prefix = ""), name = "Salary", limits = 400000*c(1,100), breaks = 1000000*seq(0,45,8))
     
   })
 
