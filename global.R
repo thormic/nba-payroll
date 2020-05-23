@@ -31,7 +31,10 @@ load("nba_workspace.RData")
 # nba <- nba %>% plyr::rename(., c("pay" = "Payroll"))
 # nba$Pos <- as.factor(nba$Pos)
 # nba$Tm <- as.factor(nba$Tm)
-# nba_sel <- nba[,c(2:3, 5:41)] %>% 
+# nba['height'] <- nba['height']*2.54
+# nba['weight'] <- nba['weight']*0.45
+# 
+# nba_sel <- nba[,c(2:3, 5:41)] %>%
 #   mutate_if(is.numeric, round, digits = 2)
 # nba_sel["X3P."] <- round(na_mean(nba_sel["X3P."]), digits = 2)
 # nba_sel["FT."] <- round(na_mean(nba_sel["FT."]), digits = 2)

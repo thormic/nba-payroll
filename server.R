@@ -79,6 +79,130 @@ server <- function(input, output, session) {
   # Team
   ########################
   
+  team_df <- eventReactive(
+    input$submit_team,
+    {
+      filter(nba_sel, Tm == input$teamChoice)
+    })
+
+  output$teamName <- renderValueBox({
+    valueBox(
+      value = tags$p(team_df()[5][,1][1], style = "font-size: 150%;"),
+      "Team",
+      icon = icon("basketball-ball"),
+      color = "light-blue"
+    )
+  })
+  
+  output$ageInfoBox <- renderValueBox({
+    valueBox(
+      round(mean(team_df()$Age),2), "Mean of Age", icon = icon("birthday-cake"), color = "orange", width=3
+    )
+  })
+  output$teamNumPlayersBox <- renderValueBox({
+    valueBox(
+      dim(team_df())[1], "Players",  icon = icon("users"), color = "blue", width=3
+    )
+  })
+  output$teamMeanPPGBox <- renderValueBox({
+    valueBox(
+      round(mean(team_df()$PPG),2), "Mean PPG", round(mean(team_df()$PPG),2), icon = icon("trophy"), color = "purple", width=3
+    )
+  })
+  output$teamMaxPayrollBox <- renderValueBox({
+    valueBox(
+      paste("$", max(team_df()$Payroll), sep = ""), "Max Payroll",icon = icon("dollar-sign"), color = "green", width=3
+    )
+  })
+  
+  output$teamPayrollByPosition <- renderPlot({
+    ggplot(team_df(), aes(Pos,Payroll))+
+      geom_bar(stat = "identity")+
+      scale_y_continuous("Payroll in Dollars", labels = dollar_format(suffix = "$", prefix = ""))+
+      theme_hc()+ scale_colour_hc() +
+      ggtitle('Payroll by position')
+  })
+  
+  output$teamPayrollHist <- renderPlot({
+    ggplot(team_df(), aes(x=Payroll)) + 
+      geom_histogram(aes(y=..density..), colour="black", bins = dim(team_df())[1])+
+      scale_x_continuous("Payroll in Dollars", labels = dollar_format(suffix = "$", prefix = ""))+
+      geom_density(alpha=.6, fill="#00ffff")+
+      theme_hc()+ scale_colour_hc() +
+      ggtitle('Payroll')
+  })
+  
+  output$teamHeightHist <- renderPlot({
+    ggplot(team_df(), aes(x=height)) + 
+      geom_histogram(aes(y=..density..), colour="black", bins = dim(team_df())[1])+
+      geom_density(alpha=.6, fill="#00ffff") +
+      theme_hc()+ scale_colour_hc() +
+      ggtitle('Height')
+  })
+  
+  output$teamPayrollPPGRegression <- renderPlot({
+    ggplot(team_df(), aes(x=PPG, y=Payroll)) +
+      geom_point(size=4) +    # Use hollow circles
+      geom_smooth(method=lm, color="#00ffff") +
+      theme_hc()+ scale_colour_hc() +
+      ggtitle('Points per game')
+  })
+  
+  output$teamTable <- DT::renderDataTable(
+    team_df(),
+    extensions = "FixedColumns",
+    rownames = FALSE,
+    options = list(info = FALSE,
+                   autoWidth = TRUE,
+                   ordering = TRUE,
+                   searching = FALSE,
+                   paging = FALSE,
+                   scrollX = TRUE,
+                   scrollY = 300,
+                   scrollColapse = TRUE,
+                   fixedColumns = list(leftColumns = 1)
+    )
+  )
+  
+  output$showTeam <- renderUI({
+    if(is.null(team_df()))return()
+    fluidPage(
+      fluidRow(
+        box(
+          plotOutput("teamPayrollByPosition"),
+          width = 6
+        ),
+        box(
+          plotOutput("teamPayrollPPGRegression"),
+          width = 6
+        )
+      ),
+      fluidRow(
+        box(
+          plotOutput("teamPayrollHist"),
+          width = 6
+        ),
+        box(
+          plotOutput("teamHeightHist"),
+          width = 6
+        )
+      ),
+      fluidRow(
+        box(
+          title = "Team Data",
+          DT::dataTableOutput("teamTable"),
+          width = 12
+        )
+      )
+    )
+  })
+  
+  # library(tidyr)
+  # cols_stats = c("Age", 'G', 'PPG', 'MPG', 'PTS','weight')
+  # ggplot(gather(df_temp[cols_stats]), aes(value)) + 
+  #   geom_histogram() + 
+  #   facet_wrap(~key, scales = 'free_x')
+  
   ########################
   # Compare/ show players
   ########################
