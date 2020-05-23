@@ -93,7 +93,7 @@ server <- function(input, output, session) {
   # Statistics for player
   output$playerName <- renderValueBox({
     valueBox(
-      value = tags$p(player_df()[1], style = "font-size: 150%;"),
+      value = tags$p(player_df()$Player, style = "font-size: 150%;"),
       "",
       icon = icon("user"),
       color = "purple"
@@ -101,7 +101,7 @@ server <- function(input, output, session) {
   })
   output$playerAge <- renderValueBox({
     valueBox(
-      player_df()[4], 
+      player_df()$Age, 
       "Age",
       icon = icon("birthday-cake"),
       color = "orange"
@@ -109,7 +109,7 @@ server <- function(input, output, session) {
   })
   output$playerGames <- renderValueBox({
     valueBox(
-      player_df()[6], 
+      player_df()$G,
       "Games played",
       icon = icon("basketball-ball"),
       color = "light-blue"
@@ -117,7 +117,7 @@ server <- function(input, output, session) {
   })
   output$playerPayroll <- renderValueBox({
     valueBox(
-      paste("$", player_df()[2], sep=''),
+      paste("$", format(player_df()$Payroll, big.mark = ","), sep=''),
       "Salary", 
       icon = icon("money-bill"),
       color = "green"
