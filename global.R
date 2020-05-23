@@ -24,7 +24,7 @@ set.seed(361309)
 
 load("nba_workspace.RData")
 
-# # read data
+# read data
 # nba <- as.data.frame(read.csv("data/nba_dataset.csv"))
 # 
 # # data modification & selecting variables
@@ -76,3 +76,8 @@ load("nba_workspace.RData")
 # nba_rf_prf <- model_performance(nba_rf_exp)
 # nba_rf_part <- model_parts(nba_rf_exp)
 # nba_rf_md <- model_diagnostics(nba_rf_exp)
+# 
+# 
+# variables_df <- data.frame(colnames(nba_sel))
+# colnames(variables_df) <- c("Variable")
+# variables_df$Description <- c('Player name', 'Salary', 'Position', 'Age', 'Team', 'Games Played', 'Minutes Played', 'Player Efficiency Rating', 'Field Goals Per 100 Team Possesions', 'Field Goal Attempts Per 100 Team Possesions', 'Field Goal Percentage', '3-Point Field Goals Per 100 Team Possesions', '3-Point Field Goal Attempts Per 100 Team Possesions', '3-Point Field Goal Percentage', '2-Point Field Goals Per 100 Team Possesions', '2-Point Field Goal Attempts Per 100 Team Possesions', '2-Point Field Goal Percentage', 'Effective Field Goal Percentage', 'Free Throws', 'Free Throws Attempts', 'Free Throw Percentage', 'Offensive Rebounds', 'Defensive Rebounds', 'Total Rebounds', 'Assists', 'Steals', 'Blocks', 'Turnovers', 'Personal Fouls', 'Points', 'Minutes Played Per Game', 'Points Per Game', 'Assists Per Game', 'Rebounds Per Game', 'Turnovers Per Game', 'Blocks Per Game', 'Steals Per Game', 'Weight', 'Height')
