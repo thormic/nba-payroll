@@ -89,6 +89,7 @@ server <- function(input, output, session) {
     filter(nba_sel, Player == input$playerChoice)
   })
   
+  
   # Statistics for player
   output$playerName <- renderValueBox({
     valueBox(
@@ -159,6 +160,40 @@ server <- function(input, output, session) {
     plot(nba_shap, max_features = 10)
   })
 
+
+  output$showPlayer <- renderUI ({
+    if(is.null(player_df()))return()
+    fluidPage(
+      fluidRow(
+        box(
+          plotOutput("simulateVariable"),
+          width = 6
+        ),
+        box(
+          plotOutput("simulateVariable2"),
+          width = 6
+        ) 
+      ),
+      fluidRow(
+        box(
+          radioButtons("modelChoice", "Model:",
+                       c("GBM" = "gbm",
+                         "Random Forest" = "rf")),
+          width = 2
+        ),
+        box(
+          plotOutput("playerBreakdown"),
+          width = 5
+        ),
+        box(
+          plotOutput("playerShap"),
+          width = 5
+        )
+      )
+    )
+  })
+  
+  
 
   
   ########################

@@ -98,6 +98,7 @@ body <- dashboardBody(
       ########################
       tabItem(
         tabName = "player",
+        fluidPage(
           fluidRow(
             box(
               selectInput(
@@ -125,32 +126,8 @@ body <- dashboardBody(
                           width = 4
             )
           ),
-          fluidRow(
-            box(
-              plotOutput("simulateVariable"),
-              width = 6
-            ),
-            box(
-              plotOutput("simulateVariable2"),
-              width = 6
-            ) 
-          ),
-          fluidRow(
-            box(
-              radioButtons("modelChoice", "Model:",
-                           c("GBM" = "gbm",
-                             "Random Forest" = "rf")),
-              width = 2
-            ),
-            box(
-              plotOutput("playerBreakdown"),
-              width = 5
-            ),
-            box(
-              plotOutput("playerShap"),
-              width = 5
-            )
-          )
+          uiOutput("showPlayer")
+      )
       ),
       
       ########################
