@@ -19,13 +19,61 @@ body <- dashboardBody(
         fluidRow(
           box(
             title = "Description",
-            includeMarkdown("include.md"),
-            width = 7
+            p("Goal of this project is to understand how certain variables affected payroll of NBA Players in 2017/18 season.
+            Firstly, we used GBM (Generalized Boosted Model) and RF (Random Forest) models to predict the salaries of the players.
+            Then, using ",
+              em("DALEX"),
+              " package, we measured the impact of each variable on the predicted salary. We also performed ",
+              em("Ceteris Paribus"), 
+              " analysis - you look at it as 'what if some variable had different value' analysis."), 
+            p("Sidebar on the left shows different parts of the analysis:",
+              strong("Data summary, "),
+              strong("Model comparison, "),
+              strong("Team, "),
+              strong("Player "),
+              " - each part responsible for different part of the analysis."),
+            width = 6
           ),
           box(
-            title = "Variables explanations",
-            width = 5
+            DT::dataTableOutput("varsTable"),
+            width = 4
+          ),
+          box(
+            h5("Made by:"),
+            h4("Bartlomiej Kowalczuk & Michal Thor"),
+            background = "orange",
+            width = 2
           )
+        ),
+        
+        fluidRow(
+          box(
+            title = "Data controler",
+            selectInput(
+              "firstVarChoice",
+              "Choose #1 variable:",
+              choices = colnames(Filter(is.numeric, nba_sel))
+            ),
+            selectInput(
+              "secondVarChoice",
+              "Choose #2 variable:",
+              choices = colnames(Filter(is.numeric, nba_sel)),
+              selected = "Age"
+            ),
+            selectInput(
+              "thirdVarChoice",
+              "Choose #3 variable:",
+              choices = colnames(Filter(is.numeric, nba_sel)),
+              selected = "PPG"
+            ),
+            width = 3,
+          ),
+          box(plotOutput("firstHistogram"),
+              width = 3),
+          box(plotOutput("secondHistogram"),
+              width = 3),
+          box(plotOutput("thirdHistogram"),
+              width = 3)
         ),
         
         fluidRow(
@@ -34,29 +82,7 @@ body <- dashboardBody(
             DT::dataTableOutput("obsTable"),
             width = 12
           )
-        ),
-        
-        fluidRow(
-          box(
-            title = "Data controler",
-            # Choose a column
-            selectInput(
-              "columnChoice",
-              "Choose a column:",
-              choices = colnames(nba_sel),
-              selected = "n"),
-            sliderInput("slider", "Percentage of observations:", 0, 1.0, 0.1),
-            # Create an eventReactive element
-            actionButton(
-              inputId = "submit",
-              label = "Submit column"),
-            width = 4
-          ),
-          box(plotOutput("histPlot"),
-              width = 8)
         )
-        
-        
       ),
       
       ########################
