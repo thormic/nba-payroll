@@ -117,8 +117,8 @@ server <- function(input, output, session) {
   })
   output$playerPayroll <- renderValueBox({
     valueBox(
-      player_df()[2],
-      "Payroll", 
+      paste("$", player_df()[2], sep=''),
+      "Salary", 
       icon = icon("money-bill"),
       color = "green"
     )
