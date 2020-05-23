@@ -112,25 +112,25 @@ server <- function(input, output, session) {
   })
   output$teamMaxPayrollBox <- renderValueBox({
     valueBox(
-      paste("$", format(max(team_df()$Payroll), big.mark = ","), sep = ""), "Max Payroll",icon = icon("dollar-sign"), color = "green", width=3
+      paste("$", format(max(team_df()$Payroll), big.mark = ","), sep = ""), "Max Salary",icon = icon("dollar-sign"), color = "green", width=3
     )
   })
   
   output$teamPayrollByPosition <- renderPlot({
     ggplot(team_df(), aes(Pos,Payroll))+
       geom_bar(stat = "identity")+
-      scale_y_continuous("Payroll in Dollars", labels = dollar_format(suffix = "$", prefix = ""))+
+      scale_y_continuous("Salaries in Dollars", labels = dollar_format(suffix = "$", prefix = ""))+
       theme_hc()+ scale_colour_hc() +
-      ggtitle('Payroll by position')
+      ggtitle('Salaries by position')
   })
   
   output$teamPayrollHist <- renderPlot({
     ggplot(team_df(), aes(x=Payroll)) + 
       geom_histogram(aes(y=..density..), colour="black", bins = dim(team_df())[1])+
-      scale_x_continuous("Payroll in Dollars", labels = dollar_format(suffix = "$", prefix = ""))+
+      scale_x_continuous("Salaries in Dollars", labels = dollar_format(suffix = "$", prefix = ""))+
       geom_density(alpha=.6, fill="#00ffff")+
       theme_hc()+ scale_colour_hc() +
-      ggtitle('Payroll')
+      ggtitle('Salaries')
   })
   
   output$teamHeightHist <- renderPlot({
@@ -144,6 +144,7 @@ server <- function(input, output, session) {
   output$teamPayrollPPGRegression <- renderPlot({
     ggplot(team_df(), aes(x=PPG, y=Payroll)) +
       geom_point(size=4) +    # Use hollow circles
+      ylab("Salary") +
       geom_smooth(method=lm, color="#00ffff") +
       theme_hc()+ scale_colour_hc() +
       ggtitle('Points per game')
