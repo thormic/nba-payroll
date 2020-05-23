@@ -27,11 +27,6 @@ server <- function(input, output, session) {
     # data <- histPlot_df() %>% filter(row_number() < nrow(.) * input$slider)
   })
   
-  output$corrPlot <- renderPlot({
-    corr_data <- cor(nba_sel[,-c(1:3,5)])
-    corrplot(corr_data)
-  })
-  
   output$obsTable <- DT::renderDataTable(
     nba_sel,
     extensions = "FixedColumns",

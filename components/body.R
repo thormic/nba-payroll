@@ -20,9 +20,22 @@ body <- dashboardBody(
           box(
             title = "Description",
             includeMarkdown("include.md"),
+            width = 7
+          ),
+          box(
+            title = "Variables explanations",
+            width = 5
+          )
+        ),
+        
+        fluidRow(
+          box(
+            title = "Observations",
+            DT::dataTableOutput("obsTable"),
             width = 12
           )
         ),
+        
         fluidRow(
           box(
             title = "Data controler",
@@ -41,23 +54,9 @@ body <- dashboardBody(
           ),
           box(plotOutput("histPlot"),
               width = 8)
-        ),
-  
-        fluidRow(
-          box(
-            title = "Correlation matrix",
-            plotOutput("corrPlot"),
-            width = 12
-          )
-        ),
-        
-        fluidRow(
-          box(
-            title = "Observations",
-            DT::dataTableOutput("obsTable"),
-            width = 12
-          )
         )
+        
+        
       ),
       
       ########################
