@@ -96,7 +96,8 @@ body <- dashboardBody(
             selectInput(
               "teamChoice",
               "Choose team:",
-              choices = nba_sel[,5],
+              # choices = nba_sel[,5],
+              choices = team_names[,2],
               selected = "n"),
             actionButton(
               inputId = "submit_team",

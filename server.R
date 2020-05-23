@@ -82,12 +82,13 @@ server <- function(input, output, session) {
   team_df <- eventReactive(
     input$submit_team,
     {
-      filter(nba_sel, Tm == input$teamChoice)
+      Tm_selected <- filter(team_names, TeamFull == input$teamChoice)[[1]]
+      filter(nba_sel, Tm == Tm_selected)
     })
 
   output$teamName <- renderValueBox({
     valueBox(
-      value = tags$p(team_df()[5][,1][1], style = "font-size: 150%;"),
+      value = tags$p(input$teamChoice, style = "font-size: 150%;"),
       "Team",
       icon = icon("basketball-ball"),
       color = "light-blue"
@@ -111,7 +112,7 @@ server <- function(input, output, session) {
   })
   output$teamMaxPayrollBox <- renderValueBox({
     valueBox(
-      paste("$", max(team_df()$Payroll), sep = ""), "Max Payroll",icon = icon("dollar-sign"), color = "green", width=3
+      paste("$", format(max(team_df()$Payroll), big.mark = ","), sep = ""), "Max Payroll",icon = icon("dollar-sign"), color = "green", width=3
     )
   })
   

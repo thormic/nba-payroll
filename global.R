@@ -40,6 +40,10 @@ load("nba_workspace.RData")
 # nba_sel["FT."] <- round(na_mean(nba_sel["FT."]), digits = 2)
 # 
 # 
+# team_names <- team_names <- data.frame(unique(nba_sel$Tm))
+# colnames(team_names) <- c('Tm')
+# team_names$TeamFull <- c('Dallas Mavericks', 'Indiana Pacers', 'Orlando Magic', 'Boston Celtics', 'Portland Trail Blazers', 'Phoenix Suns', 'Utah Jazz', 'Oklahoma City Thunder', 'Philadelphia 76ers', 'New Orleans Pelicans', 'Golden State Warriors', 'Detroit Pistons', 'Two team score', 'Memphis Grizzlies', 'Minnesota Timberwolves', 'Sacramento Kings', 'Los Angeles Clippers' , 'Houston Rockets', 'Chicago Bulls', 'Washington Wizzards', 'Los Angeles Lakers', 'Brooklyn Nets', 'Toronto Raptors', 'San Antonio Spurs', 'New York Knicks', 'Cleveland Cavaliers', 'Charlotte Hornets', 'Denver Nuggets', 'Atlanta Hawks', 'Miami Heat', 'Milwaukee Bucks')
+# 
 # # GBM Model
 # # Changeable model parameters
 # nba_gbm <- gbm(Payroll ~ . , data = nba_sel[,-1], n.trees = 250, interaction.depth = 3)
