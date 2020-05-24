@@ -52,6 +52,50 @@ server <- function(input, output, session) {
   # Models
   ########################
   
+  output$gbmRMSE <- renderValueBox({
+    valueBox(
+      h3(round(nba_gbm_prf$measures$rmse, 2), align = "center"), 
+      subtitle = NULL,
+      color = "green"
+    )
+  })
+  output$gbmMAD <- renderValueBox({
+    valueBox(
+      h3(round(nba_gbm_prf$measures$mad, 2), align = "center"),
+      subtitle = NULL,
+      color = "red"
+    )
+  })
+  output$gbmRsq <- renderValueBox({
+    valueBox(
+      h3(round(nba_gbm_prf$measures$r2, 2), align = "center"),
+      subtitle = NULL,
+      color = "green"
+    )
+  })
+  
+  output$rfRMSE <- renderValueBox({
+    valueBox(
+      h3(round(nba_rf_prf$measures$rmse, 2), align = "center"), 
+      subtitle = NULL,
+      color = "red"
+    )
+  })
+  output$rfMAD <- renderValueBox({
+    valueBox(
+      h3(round(nba_rf_prf$measures$mad, 2), align = "center"),
+      subtitle = NULL,
+      color = "green"
+    )
+  })
+  output$rfRsq <- renderValueBox({
+    valueBox(
+      h3(round(nba_rf_prf$measures$r2, 2), align = "center"),
+      subtitle = NULL,
+      color = "green"
+    )
+  })
+  
   output$resBoxPlot <- renderPlot({
     plot(nba_gbm_prf, nba_rf_prf, geom = "boxplot") +
       scale_y_continuous("Absolute residuals in Dollars", labels = dollar_format(suffix = "$", prefix = "")) + 
