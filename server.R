@@ -181,20 +181,22 @@ server <- function(input, output, session) {
   })
   output$teamMaxPayrollBox <- renderValueBox({
     valueBox(
-      paste("$", format(max(team_df()$Payroll), big.mark = ","), sep = ""), "Max Salary",icon = icon("dollar-sign"), color = "green", width=3
+      paste("$", format(max(team_df()$Salary), big.mark = ","), sep = ""), "Max Salary",icon = icon("dollar-sign"), color = "green", width=3
     )
   })
   
   output$teamPayrollByPosition <- renderPlot({
-    ggplot(team_df(), aes(Pos,Payroll))+
-      geom_bar(stat = "identity")+
+    ggplot(team_df(), aes(Pos,Salary))+
+      # geom_bar(stat = "identity")+
+      geom_point(size = 4) +
       scale_y_continuous("Salaries in Dollars", labels = dollar_format(suffix = "$", prefix = ""))+
       theme_hc()+ scale_colour_hc() +
-      ggtitle('Salaries by position')
+      ggtitle('Salaries by position') +
+      theme(plot.title = element_text(size = 13, face = "bold"))
   })
   
   output$teamPayrollHist <- renderPlot({
-    ggplot(team_df(), aes(x=Payroll)) + 
+    ggplot(team_df(), aes(x=Salary)) + 
       geom_histogram(aes(y=..density..), colour="black", bins = dim(team_df())[1])+
       scale_x_continuous("Salaries in Dollars", labels = dollar_format(suffix = "$", prefix = ""))+
       geom_density(alpha=.6, fill="#00ffff")+
@@ -211,9 +213,10 @@ server <- function(input, output, session) {
   })
   
   output$teamPayrollPPGRegression <- renderPlot({
-    ggplot(team_df(), aes(x=PPG, y=Payroll)) +
+    ggplot(team_df(), aes(x=PPG, y=Salary)) +
       geom_point(size=4) +    # Use hollow circles
       ylab("Salary") +
+      scale_y_continuous("Salaries in Dollars", labels = dollar_format(suffix = "$", prefix = "")) +
       geom_smooth(method=lm, color="#00ffff") +
       theme_hc()+ scale_colour_hc() +
       ggtitle('Points per game')
@@ -260,7 +263,7 @@ server <- function(input, output, session) {
       ),
       fluidRow(
         box(
-          title = "Team Data",
+          title = strong("Team Data"),
           DT::dataTableOutput("teamTable"),
           width = 12
         )

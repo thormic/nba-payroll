@@ -20,6 +20,7 @@ library(dplyr)
 library(corrplot)
 library(dashboardthemes)
 library(fields)
+library(ggthemes)
 
 set.seed(361309)
 
