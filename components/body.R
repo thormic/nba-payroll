@@ -19,7 +19,7 @@ body <- dashboardBody(
         tabName = "dataset",
         fluidRow(
           box(
-            title = "Description",
+            title = strong("Description"),
             p("Goal of this project is to understand how certain variables affected payroll of NBA Players in 2017/18 season.
             Firstly, we used GBM (Generalized Boosted Model) and RF (Random Forest) models to predict the salaries of the players.
             Then, using ",
@@ -49,21 +49,21 @@ body <- dashboardBody(
         
         fluidRow(
           box(
-            title = "Data controler",
+            title = strong("Data controler"),
             selectInput(
               "firstVarChoice",
-              "Choose #1 variable:",
+              p("Choose #1 variable:", style = "font-weight: lighter; margin: 0px"),
               choices = colnames(Filter(is.numeric, nba_sel))
             ),
             selectInput(
               "secondVarChoice",
-              "Choose #2 variable:",
+              p("Choose #2 variable:", style = "font-weight: lighter; margin: 0px"),
               choices = colnames(Filter(is.numeric, nba_sel)),
               selected = "Age"
             ),
             selectInput(
               "thirdVarChoice",
-              "Choose #3 variable:",
+              p("Choose #3 variable:", style = "font-weight: lighter; margin: 0px"),
               choices = colnames(Filter(is.numeric, nba_sel)),
               selected = "PPG"
             ),
@@ -79,7 +79,7 @@ body <- dashboardBody(
         
         fluidRow(
           box(
-            title = "Observations",
+            title = strong("Observations"),
             DT::dataTableOutput("obsTable"),
             width = 12
           )

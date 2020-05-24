@@ -25,11 +25,11 @@ set.seed(361309)
 
 load("nba_workspace.RData")
 
-# read data
+# # read data
 # nba <- as.data.frame(read.csv("data/nba_dataset.csv"))
 # 
 # # data modification & selecting variables
-# nba <- nba %>% plyr::rename(., c("pay" = "Payroll"))
+# nba <- nba %>% plyr::rename(., c("pay" = "Salary"))
 # nba$Pos <- as.factor(nba$Pos)
 # nba$Tm <- as.factor(nba$Tm)
 # nba['height'] <- nba['height']*2.54
@@ -47,23 +47,23 @@ load("nba_workspace.RData")
 # 
 # # GBM Model
 # # Changeable model parameters
-# nba_gbm <- gbm(Payroll ~ . , data = nba_sel[,-1], n.trees = 250, interaction.depth = 3)
+# nba_gbm <- gbm(Salary ~ . , data = nba_sel[,-1], n.trees = 250, interaction.depth = 3)
 # 
 # # RF Model
-# nba_rf <- randomForest(Payroll ~ .,
+# nba_rf <- randomForest(Salary ~ .,
 #                        data = nba_sel[,-1],)
 # 
 # # Explainer for GBM
 # nba_gbm_exp <- DALEX::explain(nba_gbm,
 #                        data = nba_sel[,-c(1,2)],
-#                        y = nba_sel$Payroll,
+#                        y = nba_sel$Salary,
 #                        predict_function = function(m,x)
 #                          predict(m, x, n.trees = 250))
 # 
 # # Explainer for RF
 # nba_rf_exp <- DALEX::explain(nba_rf,
 #                       data = nba_sel[,-c(1,2)],
-#                       y = nba_sel$Payroll,
+#                       y = nba_sel$Salary,
 #                       predict_function = function(m,x)
 #                         predict(m, x, n.trees = 250))
 # 
@@ -82,3 +82,4 @@ load("nba_workspace.RData")
 # variables_df <- data.frame(colnames(nba_sel))
 # colnames(variables_df) <- c("Variable")
 # variables_df$Description <- c('Player name', 'Salary', 'Position', 'Age', 'Team', 'Games Played', 'Minutes Played', 'Player Efficiency Rating', 'Field Goals Per 100 Team Possesions', 'Field Goal Attempts Per 100 Team Possesions', 'Field Goal Percentage', '3-Point Field Goals Per 100 Team Possesions', '3-Point Field Goal Attempts Per 100 Team Possesions', '3-Point Field Goal Percentage', '2-Point Field Goals Per 100 Team Possesions', '2-Point Field Goal Attempts Per 100 Team Possesions', '2-Point Field Goal Percentage', 'Effective Field Goal Percentage', 'Free Throws', 'Free Throws Attempts', 'Free Throw Percentage', 'Offensive Rebounds', 'Defensive Rebounds', 'Total Rebounds', 'Assists', 'Steals', 'Blocks', 'Turnovers', 'Personal Fouls', 'Points', 'Minutes Played Per Game', 'Points Per Game', 'Assists Per Game', 'Rebounds Per Game', 'Turnovers Per Game', 'Blocks Per Game', 'Steals Per Game', 'Weight', 'Height')
+# variables_df$Type <- c("character", "numeric", "factor", "numeric", "factor", rep("numeric", 34))
