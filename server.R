@@ -278,6 +278,119 @@ server <- function(input, output, session) {
   # Compare/ show players
   ########################
   
+  player_df <- eventReactive(
+  input$submit_player,
+  {
+    filter(nba_sel, Player == input$playerChoice)
+  })
+  
+  
+  # Statistics for player
+  output$playerName <- renderValueBox({
+    valueBox(
+      value = tags$p(player_df()$Player, style = "font-size: 150%;"),
+      "",
+      icon = icon("user"),
+      color = "purple"
+    )
+  })
+  output$playerAge <- renderValueBox({
+    valueBox(
+      player_df()$Age, 
+      "Age",
+      icon = icon("birthday-cake"),
+      color = "orange"
+    )
+  })
+  output$playerGames <- renderValueBox({
+    valueBox(
+      player_df()$G,
+      "Games played",
+      icon = icon("basketball-ball"),
+      color = "light-blue"
+    )
+  })
+  output$playerPayroll <- renderValueBox({
+    valueBox(
+      paste("$", format(player_df()$Payroll, big.mark = ","), sep=''),
+      "Salary", 
+      icon = icon("money-bill"),
+      color = "green"
+    )
+  })
+  
+  # simulating case for this player observation with one variable changing
+  # Different variables to choose from
+  output$simulateVariable <- renderPlot({
+    nba_cp_pg <- ingredients::ceteris_paribus(nba_gbm_exp, new_observation = player_df(), variables = "Age", variable_splits = list(Age = seq(18,45,0.1)))
+    plot(nba_cp_pg) + geom_vline(xintercept = as.numeric(player_df()[4]), linetype = "dotted", color = "blue")
+  })
+
+  output$simulateVariable2 <- renderPlot({
+    nba_cp_pg <- ingredients::ceteris_paribus(nba_gbm_exp, new_observation = player_df(), variables = "PPG", variable_splits = list(PPG = seq(0,36,3)))
+    plot(nba_cp_pg) + geom_vline(xintercept = as.numeric(player_df()[32]), linetype = "dotted", color = "blue")
+  })
+  
+  # Switch button
+  model_chosen <- reactive({
+    switch(input$modelChoice,
+           gbm = nba_gbm_exp,
+           rf = nba_rf_exp,
+           nba_gbm_exp)
+  })
+  
+  # Variables and how they affect certain players payroll
+  # Box with choosable player
+  output$playerBreakdown <- renderPlot({
+    nba_plr_bd <- break_down(model_chosen(), new_observation = player_df())
+    nba_plr_bd$label = paste("Break Down for ", player_df()[1])
+    plot(nba_plr_bd, digits = 0, max_features = 10) +  
+      scale_y_continuous(labels = dollar_format(suffix = "$", prefix = ""), name = "Salary", limits = 400000*c(1,100), breaks = 1000000*seq(0,45,8))
+    
+  })
+
+  # Variables contribution to payroll for given player
+  output$playerShap <- renderPlot({
+    nba_shap <- shap(model_chosen(), new_observation = player_df())
+    plot(nba_shap, max_features = 10)
+  })
+
+
+  output$showPlayer <- renderUI ({
+    if(is.null(player_df()))return()
+    fluidPage(
+      fluidRow(
+        box(
+          plotOutput("simulateVariable"),
+          width = 6
+        ),
+        box(
+          plotOutput("simulateVariable2"),
+          width = 6
+        ) 
+      ),
+      fluidRow(
+        box(
+          radioButtons("modelChoice", "Model:",
+                       c("GBM" = "gbm",
+                         "Random Forest" = "rf")),
+          width = 2
+        ),
+        box(
+          plotOutput("playerBreakdown"),
+          width = 5
+        ),
+        box(
+          plotOutput("playerShap"),
+          width = 5
+        )
+      )
+    )
+  })
+  
+  
+
+  
   ########################
   # Create a player
   ########################

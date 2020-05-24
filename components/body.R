@@ -6,6 +6,7 @@
 # components as well.
 ###################
 body <- dashboardBody(
+  tags$head(tags$style(HTML(".small-box {height: 100%}"))),
     shinyDashboardThemes(
       theme = "blue_gradient"
     ),
@@ -211,7 +212,37 @@ body <- dashboardBody(
       # Compare/ show players
       ########################
       tabItem(
-        tabName = "player"
+        tabName = "player",
+        fluidPage(
+          fluidRow(
+            box(
+              selectInput(
+                "playerChoice",
+                "Choose a player:",
+                choices = nba_sel[,1],
+                selected = "n"),
+              actionButton(
+                inputId = "submit_player",
+                label = "Submit player"),
+              width = 4
+            ),
+            valueBoxOutput("playerName",
+                          width = 8
+              )
+          ),
+          fluidRow(
+            valueBoxOutput("playerAge",
+                          width = 4
+            ),
+            valueBoxOutput("playerGames",
+                          width = 4
+            ),
+            valueBoxOutput("playerPayroll",
+                          width = 4
+            )
+          ),
+          uiOutput("showPlayer")
+      )
       ),
       
       ########################
