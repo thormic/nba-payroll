@@ -77,44 +77,44 @@ server <- function(input, output, session) {
   # Models
   ########################
   
-  output$gbmRMSE <- renderValueBox({
-    valueBox(
+  output$gbmRMSE <- renderInfoBox({
+    infoBox(
       h3(round(nba_gbm_prf$measures$rmse, 2), align = "center"), 
       subtitle = NULL,
       color = "green"
     )
   })
-  output$gbmMAD <- renderValueBox({
-    valueBox(
+  output$gbmMAD <- renderInfoBox({
+    infoBox(
       h3(round(nba_gbm_prf$measures$mad, 2), align = "center"),
       subtitle = NULL,
       color = "red"
     )
   })
-  output$gbmRsq <- renderValueBox({
-    valueBox(
+  output$gbmRsq <- renderInfoBox({
+    infoBox(
       h3(round(nba_gbm_prf$measures$r2, 2), align = "center"),
       subtitle = NULL,
       color = "green"
     )
   })
   
-  output$rfRMSE <- renderValueBox({
-    valueBox(
+  output$rfRMSE <- renderInfoBox({
+    infoBox(
       h3(round(nba_rf_prf$measures$rmse, 2), align = "center"), 
       subtitle = NULL,
       color = "red"
     )
   })
-  output$rfMAD <- renderValueBox({
-    valueBox(
+  output$rfMAD <- renderInfoBox({
+    infoBox(
       h3(round(nba_rf_prf$measures$mad, 2), align = "center"),
       subtitle = NULL,
       color = "green"
     )
   })
-  output$rfRsq <- renderValueBox({
-    valueBox(
+  output$rfRsq <- renderInfoBox({
+    infoBox(
       h3(round(nba_rf_prf$measures$r2, 2), align = "center"),
       subtitle = NULL,
       color = "green"

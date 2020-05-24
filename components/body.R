@@ -93,68 +93,60 @@ body <- dashboardBody(
         tabName = "models",
         
         fluidRow(
-          column(width = 1),
+          column(width = 4),
           valueBox(
             h3("GBM", align = "center"),
             subtitle = NULL,
             color = "orange",
-            width = 3
+            width = 4
           ),
-          column(width = 4),
           valueBox(
             h3("Random Forest", align = "center"),
             subtitle = NULL,
             color = "orange",
-            width = 3
-          ),
-          column(width = 1),
+            width = 4
+          )
         ),
         
         fluidRow(
-          column(width = 1),
-          valueBoxOutput("gbmRMSE", width = 3),
-          valueBox(
-            h3("RMSE", align = "center"),
-            subtitle = NULL,
-            color = "blue",
+          box(
+            h2("RMSE", align = "center"),
             width = 4
           ),
-          valueBoxOutput("rfRMSE", width = 3),
-          column(width = 1)
+          infoBoxOutput("gbmRMSE", width = 4),
+          infoBoxOutput("rfRMSE", width = 4)
           ),
         
         fluidRow(
-          column(width = 1),
-          valueBoxOutput("gbmMAD", width = 3),
-          valueBox(
-            h3("Mean Absolute Deviance", align = "center"),
-            subtitle = NULL,
-            color = "blue",
+          box(
+            h2("Mean Absolute Deviance", align = "center"),
             width = 4
           ),
-          valueBoxOutput("rfMAD", width = 3),
-          column(width = 1),
+          infoBoxOutput("gbmMAD", width = 4),
+          infoBoxOutput("rfMAD", width = 4)
         ),
         
         fluidRow(
-          column(width = 1),
-          valueBoxOutput("gbmRsq", width = 3),
-          valueBox(
-            h3(HTML(paste0("R",tags$sup("2"))), align = "center"),
-            subtitle = NULL,
-            color = "blue",
+          box(
+            h2(HTML(paste0("R",tags$sup("2"))), align = "center"),
             width = 4
           ),
-          valueBoxOutput("rfRsq", width = 3),
-          column(width = 1),
+          infoBoxOutput("gbmRsq", width = 4),
+          infoBoxOutput("rfRsq", width = 4)
+        ),
+        fluidRow(
+          column(12,div(style = "height:75px"))
         ),
       
         fluidRow(
+          column(width = 3),
           valueBox(
             h3("Comparison", align = "center"),
             subtitle = NULL,
-            width = 12
-          ) 
+            color = "orange",
+            width = 6
+          ),
+          column(width = 3),
         ),
         
         fluidRow(
