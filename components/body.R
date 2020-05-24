@@ -90,17 +90,81 @@ body <- dashboardBody(
       ########################
       tabItem(
         tabName = "models",
-          fluidRow(
-           box(
-             plotOutput("resBoxPlot"),
-             width = 12
-           ) 
-          ),
+        
         fluidRow(
-          box(
-            plotOutput("dropLossPlot"),
+          column(width = 1),
+          valueBox(
+            h3("GBM", align = "center"),
+            subtitle = NULL,
+            color = "orange",
+            width = 3
+          ),
+          column(width = 4),
+          valueBox(
+            h3("Random Forest", align = "center"),
+            subtitle = NULL,
+            color = "orange",
+            width = 3
+          ),
+          column(width = 1),
+        ),
+        
+        fluidRow(
+          column(width = 1),
+          valueBoxOutput("gbmRMSE", width = 3),
+          valueBox(
+            h3("RMSE", align = "center"),
+            subtitle = NULL,
+            color = "blue",
+            width = 4
+          ),
+          valueBoxOutput("rfRMSE", width = 3),
+          column(width = 1)
+          ),
+        
+        fluidRow(
+          column(width = 1),
+          valueBoxOutput("gbmMAD", width = 3),
+          valueBox(
+            h3("Mean Absolute Deviance", align = "center"),
+            subtitle = NULL,
+            color = "blue",
+            width = 4
+          ),
+          valueBoxOutput("rfMAD", width = 3),
+          column(width = 1),
+        ),
+        
+        fluidRow(
+          column(width = 1),
+          valueBoxOutput("gbmRsq", width = 3),
+          valueBox(
+            h3(HTML(paste0("R",tags$sup("2"))), align = "center"),
+            subtitle = NULL,
+            color = "blue",
+            width = 4
+          ),
+          valueBoxOutput("rfRsq", width = 3),
+          column(width = 1),
+        ),
+      
+        fluidRow(
+          valueBox(
+            h3("Comparison", align = "center"),
+            subtitle = NULL,
             width = 12
           ) 
+        ),
+        
+        fluidRow(
+         box(
+           plotOutput("resBoxPlot"),
+           width = 6
+         ),
+         box(
+           plotOutput("dropLossPlot"),
+           width = 6
+         )
         ),
         fluidRow(
           box(
