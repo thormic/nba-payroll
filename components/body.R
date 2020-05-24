@@ -178,7 +178,33 @@ body <- dashboardBody(
       # Team
       ########################
       tabItem(
-        tabName = "team"
+        tabName = "team",
+        
+        fluidRow(
+          box(
+            selectInput(
+              "teamChoice",
+              "Choose team:",
+              # choices = nba_sel[,5],
+              choices = team_names[,2],
+              selected = "n"),
+            actionButton(
+              inputId = "submit_team",
+              label = "Submit team"),
+            width = 6
+          ),
+          
+          valueBoxOutput("teamName", width=6),
+          
+        ),
+        fluidRow(
+          valueBoxOutput("ageInfoBox", width=3),
+          valueBoxOutput("teamMaxPayrollBox", width=3),
+          valueBoxOutput("teamNumPlayersBox", width=3),
+          valueBoxOutput("teamMeanPPGBox", width=3)
+        ),
+        uiOutput("showTeam")
+      
       ),
       
       ########################

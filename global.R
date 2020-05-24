@@ -24,18 +24,25 @@ set.seed(361309)
 
 load("nba_workspace.RData")
 
-# # read data
+# read data
 # nba <- as.data.frame(read.csv("data/nba_dataset.csv"))
 # 
 # # data modification & selecting variables
 # nba <- nba %>% plyr::rename(., c("pay" = "Payroll"))
 # nba$Pos <- as.factor(nba$Pos)
 # nba$Tm <- as.factor(nba$Tm)
-# nba_sel <- nba[,c(2:3, 5:41)] %>% 
+# nba['height'] <- nba['height']*2.54
+# nba['weight'] <- nba['weight']*0.45
+# 
+# nba_sel <- nba[,c(2:3, 5:41)] %>%
 #   mutate_if(is.numeric, round, digits = 2)
 # nba_sel["X3P."] <- round(na_mean(nba_sel["X3P."]), digits = 2)
 # nba_sel["FT."] <- round(na_mean(nba_sel["FT."]), digits = 2)
 # 
+# 
+# team_names <- team_names <- data.frame(unique(nba_sel$Tm))
+# colnames(team_names) <- c('Tm')
+# team_names$TeamFull <- c('Dallas Mavericks', 'Indiana Pacers', 'Orlando Magic', 'Boston Celtics', 'Portland Trail Blazers', 'Phoenix Suns', 'Utah Jazz', 'Oklahoma City Thunder', 'Philadelphia 76ers', 'New Orleans Pelicans', 'Golden State Warriors', 'Detroit Pistons', 'Two team score', 'Memphis Grizzlies', 'Minnesota Timberwolves', 'Sacramento Kings', 'Los Angeles Clippers' , 'Houston Rockets', 'Chicago Bulls', 'Washington Wizzards', 'Los Angeles Lakers', 'Brooklyn Nets', 'Toronto Raptors', 'San Antonio Spurs', 'New York Knicks', 'Cleveland Cavaliers', 'Charlotte Hornets', 'Denver Nuggets', 'Atlanta Hawks', 'Miami Heat', 'Milwaukee Bucks')
 # 
 # # GBM Model
 # # Changeable model parameters
@@ -69,3 +76,8 @@ load("nba_workspace.RData")
 # nba_rf_prf <- model_performance(nba_rf_exp)
 # nba_rf_part <- model_parts(nba_rf_exp)
 # nba_rf_md <- model_diagnostics(nba_rf_exp)
+# 
+# 
+# variables_df <- data.frame(colnames(nba_sel))
+# colnames(variables_df) <- c("Variable")
+# variables_df$Description <- c('Player name', 'Salary', 'Position', 'Age', 'Team', 'Games Played', 'Minutes Played', 'Player Efficiency Rating', 'Field Goals Per 100 Team Possesions', 'Field Goal Attempts Per 100 Team Possesions', 'Field Goal Percentage', '3-Point Field Goals Per 100 Team Possesions', '3-Point Field Goal Attempts Per 100 Team Possesions', '3-Point Field Goal Percentage', '2-Point Field Goals Per 100 Team Possesions', '2-Point Field Goal Attempts Per 100 Team Possesions', '2-Point Field Goal Percentage', 'Effective Field Goal Percentage', 'Free Throws', 'Free Throws Attempts', 'Free Throw Percentage', 'Offensive Rebounds', 'Defensive Rebounds', 'Total Rebounds', 'Assists', 'Steals', 'Blocks', 'Turnovers', 'Personal Fouls', 'Points', 'Minutes Played Per Game', 'Points Per Game', 'Assists Per Game', 'Rebounds Per Game', 'Turnovers Per Game', 'Blocks Per Game', 'Steals Per Game', 'Weight', 'Height')

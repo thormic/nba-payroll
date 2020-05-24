@@ -19,6 +19,8 @@ library(randomForest)
 library(imputeTS)
 library(dplyr)
 
+library(ggthemes)
+
 source('./ui.R')
 source('./server.R')
 
