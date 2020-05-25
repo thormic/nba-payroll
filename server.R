@@ -287,9 +287,16 @@ server <- function(input, output, session) {
     filter(nba_sel, Player == input$playerChoice)
   })
   
-  compare_df <- reactive(
+  compare_df <- eventReactive(
+    input$compare_player,
     {
       filter(nba_sel, Player == input$compareChoice)
+    })
+  
+  third_df <- eventReactive(
+    input$compare_player,
+    {
+      filter(nba_sel, Player == input$thirdChoice)
     })
   
   output$playerName <- renderValueBox({
@@ -378,6 +385,14 @@ server <- function(input, output, session) {
       scale_y_continuous(labels = dollar_format(suffix = "$", prefix = ""), name = "Salary", limits = 400000*c(1,100), breaks = 1000000*seq(0,45,8))
     
   })
+  
+  output$thirdBreakdown <- renderPlot({
+    nba_third_bd <- break_down(model_chosen(), new_observation = third_df())
+    nba_third_bd$label = paste("Break Down for ", third_df()[1])
+    plot(nba_third_bd, digits = 0, max_features = 10) +  
+      scale_y_continuous(labels = dollar_format(suffix = "$", prefix = ""), name = "Salary", limits = 400000*c(1,100), breaks = 1000000*seq(0,45,8))
+    
+  })
 
 
   output$showPlayer <- renderUI ({
@@ -419,21 +434,81 @@ server <- function(input, output, session) {
         )
       ),
       fluidRow(
+        column(12,div(style = "height:60px"))
+      ),
+      fluidRow(
+        column(width = 3),
+        valueBox(
+          h3("Compare players", align = "center"),
+          subtitle = NULL,
+          color = "orange",
+          width = 6
+        ),
+        column(width = 3),
+      ),
+      fluidRow(
         box(
-          h3("Compare players"),
-          selectInput(
-            "compareChoice",
-            paste("Choose a player to compare with ", player_df()$Player, ":", sep = ""),
-            choices = nba_sel[,1],
-            selected = "Stephen Curry"),
-          uiOutput("showCompare"),
-          radioButtons("modelChoice", 
+          column(radioButtons("numberChoice", 
+                       "How many players to compare?",
+                       c("1" = "one",
+                         "2" = "two")),
+                 width = 2),
+          column(radioButtons("modelChoice", 
                        "Model to use:",
                        c("GBM" = "gbm",
                          "Random Forest" = "rf")),
+                 width = 2),
+          uiOutput("comparePlayers"),
           width = 12
         )
         ),
+      uiOutput("showComparePlots")
+    )
+        
+  })
+  
+  output$comparePlayers <- renderUI ({
+    if (input$numberChoice == "one") {
+      column(
+        selectInput(
+        "compareChoice",
+        paste("Choose a player to compare with ", player_df()$Player, ":", sep = ""),
+        choices = nba_sel[,1],
+        selected = "Stephen Curry"),
+      actionButton(
+        inputId = "compare_player",
+        label = "Compare player"),
+      width = 4)
+    }
+    
+    else if (input$numberChoice == "two") {
+      div(
+        column(
+        selectInput(
+        "compareChoice",
+        paste("Choose first player to compare with ", player_df()$Player, ":", sep = ""),
+        choices = nba_sel[,1],
+        selected = "Stephen Curry"),
+        width = 4),
+        column(
+        selectInput(
+          "thirdChoice",
+          paste("Choose second player to compare with ", player_df()$Player, ":", sep = ""),
+          choices = nba_sel[,1],
+          selected = "Russell Westbrook"),
+        actionButton(
+          inputId = "compare_player",
+          label = "Compare players"),
+        width = 4),
+        width = 8)
+    }
+
+
+  })
+  
+  output$showComparePlots <- renderUI ({
+    if (is.null(input$compare_player)) return()
+    if (input$numberChoice == "one") {
       fluidRow(
         box(
           plotOutput("playerBreakdown"),
@@ -444,18 +519,24 @@ server <- function(input, output, session) {
           width = 6
         )
       )
-    )
+    }
+    else if (input$numberChoice == "two") {
+      fluidRow(
+        box(
+          plotOutput("playerBreakdown"),
+          width = 4
+        ),
+        box(
+          plotOutput("compareBreakdown"),
+          width = 4
+        ),
+        box(
+          plotOutput("thirdBreakdown"),
+          width = 4
+        )
+      )
+    }
   })
-  
-  output$showCompare <- renderUI ({
-    if(is.null(compare_df()))return()
-          selectInput(
-            "compareTwoChoice",
-            paste("Choose a player to compare with ", player_df()$Player, " and ", compare_df()$Player, ":", sep = ""),
-            choices = nba_sel[,1],
-            selected = "Russell Westbrook")
-      })
-
   
   ########################
   # Create a player

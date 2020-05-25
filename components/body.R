@@ -135,7 +135,7 @@ body <- dashboardBody(
           infoBoxOutput("rfRsq", width = 4)
         ),
         fluidRow(
-          column(12,div(style = "height:75px"))
+          column(12,div(style = "height:60px"))
         ),
       
         fluidRow(
