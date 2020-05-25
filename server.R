@@ -325,7 +325,7 @@ server <- function(input, output, session) {
   })
   output$playerPayroll <- renderValueBox({
     valueBox(
-      paste("$", format(player_df()$Salary, big.mark = ","), sep=''),
+      paste("$", format((player_df()$Salary + 16427), big.mark = ","), sep=''),
       "Salary", 
       icon = icon("money-bill"),
       color = "green"
@@ -338,25 +338,46 @@ server <- function(input, output, session) {
     nba_cp_pg <- ingredients::ceteris_paribus(nba_gbm_exp, 
                                               new_observation = player_df(), 
                                               variables = input$firstCPChoice)
-    plot(nba_cp_pg) + 
-      geom_vline(xintercept = as.numeric(player_df()$firstCPChoice), linetype = "dotted", color = "blue")
+    plot(nba_cp_pg) +
+      ylab("Salary") + 
+      xlab(input$firstCPChoice) +
+      ggtitle(paste("Plot for", input$firstCPChoice)) +
+      geom_vline(xintercept = as.numeric(player_df()[input$firstCPChoice]), linetype = "dotted", color = "blue") +
+      geom_text(mapping = aes(x = as.numeric(player_df()[input$firstCPChoice]), 
+                              y = 0, 
+                              label = paste("Current", input$firstCPChoice)),
+                size=4.5, angle=90, vjust=-0.4, hjust=0)
   })
+  
 
   output$simulateVariable2 <- renderPlot({
     nba_cp2_pg <- ingredients::ceteris_paribus(nba_gbm_exp, 
                                                new_observation = player_df(), 
                                                variables = input$secondCPChoice)
     plot(nba_cp2_pg) + 
-      geom_vline(xintercept = as.numeric(player_df()$input$secondCPChoice), linetype = "dotted", color = "blue")
+      ylab("Salary") + 
+      xlab(input$secondCPChoice) +
+      ggtitle(paste("Plot for", input$secondCPChoice)) +
+      geom_vline(xintercept = as.numeric(player_df()[input$secondCPChoice]), linetype = "dotted", color = "blue") +
+      geom_text(mapping = aes(x = as.numeric(player_df()[input$secondCPChoice]), 
+                              y = 0, 
+                              label = paste("Current", input$secondCPChoice)),
+                size=4.5, angle=90, vjust=-0.4, hjust=0)
   })
   
   output$simulateVariable3 <- renderPlot({
     nba_cp3_pg <- ingredients::ceteris_paribus(nba_gbm_exp, 
                                                new_observation = player_df(), 
-                                               variables = input$thirdCPChoice, 
-                                               variable_splits = list(PPG = seq(0,36,3)))
-    plot(nba_cp3_pg) + 
-      geom_vline(xintercept = as.numeric(player_df()$input$thirdCPChoice), linetype = "dotted", color = "blue")
+                                               variables = input$thirdCPChoice)
+    plot(nba_cp3_pg) +
+      ylab("Salary") + 
+      xlab(input$thirdCPChoice) +
+      ggtitle(paste("Plot for", input$thirdCPChoice)) +
+      geom_vline(xintercept = as.numeric(player_df()[input$thirdCPChoice]), linetype = "dotted", color = "blue") +
+      geom_text(mapping = aes(x = as.numeric(player_df()[input$thirdCPChoice]), 
+                              y = 0, 
+                              label = paste("Current", input$thirdCPChoice)),
+                size=4.5, angle=90, vjust=-0.4, hjust=0)
   })
   
   
@@ -444,7 +465,7 @@ server <- function(input, output, session) {
           color = "orange",
           width = 6
         ),
-        column(width = 3),
+        column(width = 3)
       ),
       fluidRow(
         box(
@@ -537,9 +558,6 @@ server <- function(input, output, session) {
       )
     }
   })
-  
-  ########################
-  # Create a player
-  ########################
+
   
 }

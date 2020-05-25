@@ -235,14 +235,8 @@ body <- dashboardBody(
           ),
           uiOutput("showPlayer")
       )
-      ),
-      
-      ########################
-      # Create a player
-      ########################
-      tabItem(
-        tabName = "create"
       )
       
+
     )
 )
