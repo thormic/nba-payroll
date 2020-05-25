@@ -287,6 +287,10 @@ server <- function(input, output, session) {
     filter(nba_sel, Player == input$playerChoice)
   })
   
+  compare_df <- reactive(
+    {
+      filter(nba_sel, Player == input$compareChoice)
+    })
   
   output$playerName <- renderValueBox({
     valueBox(
@@ -324,14 +328,30 @@ server <- function(input, output, session) {
   # simulating case for this player observation with one variable changing
   # Different variables to choose from
   output$simulateVariable <- renderPlot({
-    nba_cp_pg <- ingredients::ceteris_paribus(nba_gbm_exp, new_observation = player_df(), variables = "Age", variable_splits = list(Age = seq(18,45,0.1)))
-    plot(nba_cp_pg) + geom_vline(xintercept = as.numeric(player_df()[4]), linetype = "dotted", color = "blue")
+    nba_cp_pg <- ingredients::ceteris_paribus(nba_gbm_exp, 
+                                              new_observation = player_df(), 
+                                              variables = input$firstCPChoice)
+    plot(nba_cp_pg) + 
+      geom_vline(xintercept = as.numeric(player_df()$firstCPChoice), linetype = "dotted", color = "blue")
   })
 
   output$simulateVariable2 <- renderPlot({
-    nba_cp_pg <- ingredients::ceteris_paribus(nba_gbm_exp, new_observation = player_df(), variables = "PPG", variable_splits = list(PPG = seq(0,36,3)))
-    plot(nba_cp_pg) + geom_vline(xintercept = as.numeric(player_df()[32]), linetype = "dotted", color = "blue")
+    nba_cp2_pg <- ingredients::ceteris_paribus(nba_gbm_exp, 
+                                               new_observation = player_df(), 
+                                               variables = input$secondCPChoice)
+    plot(nba_cp2_pg) + 
+      geom_vline(xintercept = as.numeric(player_df()$input$secondCPChoice), linetype = "dotted", color = "blue")
   })
+  
+  output$simulateVariable3 <- renderPlot({
+    nba_cp3_pg <- ingredients::ceteris_paribus(nba_gbm_exp, 
+                                               new_observation = player_df(), 
+                                               variables = input$thirdCPChoice, 
+                                               variable_splits = list(PPG = seq(0,36,3)))
+    plot(nba_cp3_pg) + 
+      geom_vline(xintercept = as.numeric(player_df()$input$thirdCPChoice), linetype = "dotted", color = "blue")
+  })
+  
   
   # Switch button
   model_chosen <- reactive({
@@ -350,11 +370,13 @@ server <- function(input, output, session) {
       scale_y_continuous(labels = dollar_format(suffix = "$", prefix = ""), name = "Salary", limits = 400000*c(1,100), breaks = 1000000*seq(0,45,8))
     
   })
-
-  # Variables contribution to payroll for given player
-  output$playerShap <- renderPlot({
-    nba_shap <- shap(model_chosen(), new_observation = player_df())
-    plot(nba_shap, max_features = 10)
+  
+  output$compareBreakdown <- renderPlot({
+    nba_comp_bd <- break_down(model_chosen(), new_observation = compare_df())
+    nba_comp_bd$label = paste("Break Down for ", compare_df()[1])
+    plot(nba_comp_bd, digits = 0, max_features = 10) +  
+      scale_y_continuous(labels = dollar_format(suffix = "$", prefix = ""), name = "Salary", limits = 400000*c(1,100), breaks = 1000000*seq(0,45,8))
+    
   })
 
 
@@ -363,34 +385,76 @@ server <- function(input, output, session) {
     fluidPage(
       fluidRow(
         box(
+          title = strong("Ceteris paribus simulation"),
+          selectInput(
+            "firstCPChoice",
+            p("Choose #1 variable:", style = "font-weight: lighter; margin: 0px"),
+            choices = colnames(Filter(is.numeric, nba_sel))[-1]
+          ),
+          selectInput(
+            "secondCPChoice",
+            p("Choose #2 variable:", style = "font-weight: lighter; margin: 0px"),
+            choices = colnames(Filter(is.numeric, nba_sel))[-1],
+            selected = "MP"
+          ),
+          selectInput(
+            "thirdCPChoice",
+            p("Choose #3 variable:", style = "font-weight: lighter; margin: 0px"),
+            choices = colnames(Filter(is.numeric, nba_sel))[-1],
+            selected = "PPG"
+          ),
+          width = 3
+        ),
+        box(
           plotOutput("simulateVariable"),
-          width = 6
+          width = 3
         ),
         box(
           plotOutput("simulateVariable2"),
-          width = 6
-        ) 
+          width = 3
+        ),
+        box(
+          plotOutput("simulateVariable3"),
+          width = 3
+        )
       ),
       fluidRow(
         box(
-          radioButtons("modelChoice", "Model:",
+          h3("Compare players"),
+          selectInput(
+            "compareChoice",
+            paste("Choose a player to compare with ", player_df()$Player, ":", sep = ""),
+            choices = nba_sel[,1],
+            selected = "Stephen Curry"),
+          uiOutput("showCompare"),
+          radioButtons("modelChoice", 
+                       "Model to use:",
                        c("GBM" = "gbm",
                          "Random Forest" = "rf")),
-          width = 2
+          width = 12
+        )
         ),
+      fluidRow(
         box(
           plotOutput("playerBreakdown"),
-          width = 5
+          width = 6
         ),
         box(
-          plotOutput("playerShap"),
-          width = 5
+          plotOutput("compareBreakdown"),
+          width = 6
         )
       )
     )
   })
   
-  
+  output$showCompare <- renderUI ({
+    if(is.null(compare_df()))return()
+          selectInput(
+            "compareTwoChoice",
+            paste("Choose a player to compare with ", player_df()$Player, " and ", compare_df()$Player, ":", sep = ""),
+            choices = nba_sel[,1],
+            selected = "Russell Westbrook")
+      })
 
   
   ########################
