@@ -166,7 +166,7 @@ server <- function(input, output, session) {
   
   output$ageInfoBox <- renderValueBox({
     valueBox(
-      round(mean(team_df()$Age),2), "Mean of Age", icon = icon("birthday-cake"), color = "orange", width=3
+      round(mean(team_df()$Age),2), "Mean of Age", icon = icon("birthday-cake"), color = "teal", width=3
     )
   })
   output$teamNumPlayersBox <- renderValueBox({
@@ -304,7 +304,7 @@ server <- function(input, output, session) {
       value = tags$p(player_df()$Player, style = "font-size: 150%;"),
       subtitle = filter(team_names, Tm == player_df()$Tm)[[2]],
       icon = icon("user"),
-      color = "purple"
+      color = "light-blue"
     )
   })
   output$playerAge <- renderValueBox({
@@ -312,7 +312,7 @@ server <- function(input, output, session) {
       player_df()$Age, 
       "Age",
       icon = icon("birthday-cake"),
-      color = "orange"
+      color = "teal"
     )
   })
   output$playerGames <- renderValueBox({
@@ -320,14 +320,14 @@ server <- function(input, output, session) {
       player_df()$G,
       "Games played",
       icon = icon("basketball-ball"),
-      color = "light-blue"
+      color = "purple"
     )
   })
   output$playerPayroll <- renderValueBox({
     valueBox(
       paste("$", format((player_df()$Salary + 16427), big.mark = ","), sep=''),
       "Salary", 
-      icon = icon("money-bill"),
+      icon = icon("dollar-sign"),
       color = "green"
     )
   })
