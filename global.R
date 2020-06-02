@@ -3,7 +3,6 @@
 # 
 # Anything shared between your ui and server.
 ###################
-source("requirements.R")
 
 library(shiny)
 library(shinydashboard)
@@ -18,7 +17,6 @@ library(scales)
 library(randomForest)
 library(imputeTS)
 library(dplyr)
-library(corrplot)
 library(dashboardthemes)
 library(fields)
 library(ggthemes)
