@@ -3,6 +3,7 @@
 # 
 # Anything shared between your ui and server.
 ###################
+source("requirements.R")
 
 library(shiny)
 library(shinydashboard)
