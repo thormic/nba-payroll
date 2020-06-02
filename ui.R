@@ -10,6 +10,7 @@ source('./components/body.R')
 
 
 ui <- dashboardPage(
+  title = "NBA Players Payroll 2017/18",
   header = header,
   sidebar =  sidebar,
   body = body)

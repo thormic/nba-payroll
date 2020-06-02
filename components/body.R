@@ -6,7 +6,7 @@
 # components as well.
 ###################
 body <- dashboardBody(
-  tags$head(tags$style(HTML(".small-box {height: 100%}"))),
+  tags$style(HTML(".small-box {height: 100%}; .logo {font-size: 15px}")),
     shinyDashboardThemes(
       theme = "blue_gradient"
     ),
