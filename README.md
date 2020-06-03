@@ -21,6 +21,7 @@ Dashboard built in Shiny, in which, using mainly DALEX package we summarize the 
   - [sidebar.R](https://github.com/thormic/nba-payroll/blob/master/components/sidebar.R)
 - [data](https://github.com/thormic/nba-payroll/tree/master/data)
   - [NBA dataset](https://github.com/thormic/nba-payroll/blob/master/data/nba_dataset.csv)
+  - [NBA workspace in .RData](https://github.com/thormic/nba-payroll/blob/master/data/nba_workspace.RData)
 - [app.R](https://github.com/thormic/nba-payroll/blob/master/app.R)
 - [global.R](https://github.com/thormic/nba-payroll/blob/master/global.R)
 - [server.R](https://github.com/thormic/nba-payroll/blob/master/server.R)
