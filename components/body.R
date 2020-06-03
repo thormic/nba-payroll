@@ -53,7 +53,8 @@ body <- dashboardBody(
             selectInput(
               "firstVarChoice",
               p("Choose #1 variable:", style = "font-weight: lighter; margin: 0px"),
-              choices = colnames(Filter(is.numeric, nba_sel))
+              choices = colnames(Filter(is.numeric, nba_sel)),
+              selected = "height"
             ),
             selectInput(
               "secondVarChoice",

@@ -271,11 +271,6 @@ server <- function(input, output, session) {
     )
   })
   
-  # library(tidyr)
-  # cols_stats = c("Age", 'G', 'PPG', 'MPG', 'PTS','weight')
-  # ggplot(gather(df_temp[cols_stats]), aes(value)) + 
-  #   geom_histogram() + 
-  #   facet_wrap(~key, scales = 'free_x')
   
   ########################
   # Compare/ show players
