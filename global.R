@@ -23,7 +23,7 @@ library(ggthemes)
 
 set.seed(361309)
 
-load("nba_workspace.RData")
+load("data/nba_workspace.RData")
 
 # # read data
 # nba <- as.data.frame(read.csv("data/nba_dataset.csv"))
