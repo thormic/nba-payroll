@@ -95,8 +95,10 @@ Dashboard built in Shiny, in which, using mainly [DALEX](https://github.com/Mode
 
 ## Clone
 
-- Clone this repo to your local machine using `https://github.com/thormic/nba-payroll.git`
-
+- Clone this repo to your local machine using 
+```bash
+git clone https://github.com/thormic/nba-payroll.git
+```
 <br>
 
 ---
