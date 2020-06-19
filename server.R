@@ -353,7 +353,9 @@ server <- function(input, output, session) {
       geom_text(mapping = aes(x = as.numeric(player_df()[input$firstCPChoice]), 
                               y = 0, 
                               label = paste("Current", input$firstCPChoice)),
-                size=4.5, angle=90, vjust=-0.4, hjust=0)
+                size=4.5, angle=90, vjust=-0.4, hjust=0) +
+      scale_y_continuous(labels = dollar_format(suffix = "$", prefix = ""), name = "Salary", limits = 320000*c(1,100), breaks = 1000000*seq(0,32,8))
+      
   })
   
 
@@ -369,7 +371,9 @@ server <- function(input, output, session) {
       geom_text(mapping = aes(x = as.numeric(player_df()[input$secondCPChoice]), 
                               y = 0, 
                               label = paste("Current", input$secondCPChoice)),
-                size=4.5, angle=90, vjust=-0.4, hjust=0)
+                size=4.5, angle=90, vjust=-0.4, hjust=0) +
+      scale_y_continuous(labels = dollar_format(suffix = "$", prefix = ""), name = "Salary", limits = 320000*c(1,100), breaks = 1000000*seq(0,32,8))
+    
   })
   
   output$simulateVariable3 <- renderPlot({
@@ -384,7 +388,9 @@ server <- function(input, output, session) {
       geom_text(mapping = aes(x = as.numeric(player_df()[input$thirdCPChoice]), 
                               y = 0, 
                               label = paste("Current", input$thirdCPChoice)),
-                size=4.5, angle=90, vjust=-0.4, hjust=0)
+                size=4.5, angle=90, vjust=-0.4, hjust=0) +
+      scale_y_continuous(labels = dollar_format(suffix = "$", prefix = ""), name = "Salary", limits = 320000*c(1,100), breaks = 1000000*seq(0,32,8))
+    
   })
   
   
@@ -402,7 +408,8 @@ server <- function(input, output, session) {
     nba_plr_bd <- break_down(model_chosen(), new_observation = player_df())
     nba_plr_bd$label = paste("Break Down for ", player_df()[1])
     plot(nba_plr_bd, digits = 0, max_features = 10) +  
-      scale_y_continuous(labels = dollar_format(suffix = "$", prefix = ""), name = "Salary", limits = 400000*c(1,100), breaks = 1000000*seq(0,45,8))
+      scale_y_continuous(labels = dollar_format(suffix = "$", prefix = ""), name = "Salary", limits = 320000*c(1,100), breaks = 1000000*seq(0,32,8)) +
+      theme(axis.text.x = element_text(angle = 15, vjust = 0.5))
     
   })
   
@@ -410,7 +417,8 @@ server <- function(input, output, session) {
     nba_comp_bd <- break_down(model_chosen(), new_observation = compare_df())
     nba_comp_bd$label = paste("Break Down for ", compare_df()[1])
     plot(nba_comp_bd, digits = 0, max_features = 10) +  
-      scale_y_continuous(labels = dollar_format(suffix = "$", prefix = ""), name = "Salary", limits = 400000*c(1,100), breaks = 1000000*seq(0,45,8))
+      scale_y_continuous(labels = dollar_format(suffix = "$", prefix = ""), name = "Salary", limits = 320000*c(1,100), breaks = 1000000*seq(0,32,8)) +
+      theme(axis.text.x = element_text(angle = 15, vjust = 0.5))
     
   })
   
@@ -418,7 +426,8 @@ server <- function(input, output, session) {
     nba_third_bd <- break_down(model_chosen(), new_observation = third_df())
     nba_third_bd$label = paste("Break Down for ", third_df()[1])
     plot(nba_third_bd, digits = 0, max_features = 10) +  
-      scale_y_continuous(labels = dollar_format(suffix = "$", prefix = ""), name = "Salary", limits = 400000*c(1,100), breaks = 1000000*seq(0,45,8))
+      scale_y_continuous(labels = dollar_format(suffix = "$", prefix = ""), name = "Salary", limits = 320000*c(1,100), breaks = 1000000*seq(0,32,8)) +
+      theme(axis.text.x = element_text(angle = 15, vjust = 0.5))
     
   })
 
