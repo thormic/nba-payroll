@@ -15,7 +15,7 @@ server <- function(input, output, session) {
     options = list(info = FALSE,
                    autoWidth = TRUE,
                    ordering = TRUE,
-                   searching = FALSE,
+                   searching = TRUE,
                    paging = FALSE,
                    scrollX = TRUE,
                    scrollY = 150,
@@ -30,7 +30,7 @@ server <- function(input, output, session) {
     options = list(info = FALSE,
                    autoWidth = TRUE,
                    ordering = TRUE,
-                   searching = FALSE,
+                   searching = TRUE,
                    paging = FALSE,
                    scrollX = TRUE,
                    scrollY = 300,
@@ -186,13 +186,25 @@ server <- function(input, output, session) {
   })
   
   output$teamPayrollByPosition <- renderPlot({
-    ggplot(team_df(), aes(Pos,Salary))+
-      # geom_bar(stat = "identity")+
-      geom_point(size = 4) +
+    
+    Tm_selected <- team_df()$Tm[1]
+    
+    team_name <- filter(team_names, Tm == Tm_selected)[[1]]
+    team_name <- levels(team_name)[team_name]
+    
+    temp_salaries <- team_df()
+    nba_sel$chosen_team <- ifelse(nba_sel$Tm == Tm_selected, team_name, 'others')
+    
+    colrs <- c('blue', 'red')
+    
+    ggplot(nba_sel, aes(Pos, Salary)) +
+      geom_point(size = 4, aes(colour = factor(chosen_team))) +
       scale_y_continuous("Salaries in Dollars", labels = dollar_format(suffix = "$", prefix = ""))+
       theme_hc()+ scale_colour_hc() +
       ggtitle('Salaries by position') +
-      theme(plot.title = element_text(size = 13, face = "bold"))
+      theme(plot.title = element_text(size = 13, face = "bold")) +
+      scale_color_manual(breaks =c(team_name,'others'), values=c("red","grey"))+
+      labs(col='Team:')
   })
   
   output$teamPayrollHist <- renderPlot({
@@ -229,7 +241,7 @@ server <- function(input, output, session) {
     options = list(info = FALSE,
                    autoWidth = TRUE,
                    ordering = TRUE,
-                   searching = FALSE,
+                   searching = TRUE,
                    paging = FALSE,
                    scrollX = TRUE,
                    scrollY = 300,
