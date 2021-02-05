@@ -3,7 +3,8 @@
 
 Dashboard built in Shiny, in which, using mainly [DALEX](https://github.com/ModelOriented/DALEX) package we summarize the data and explain what are the factors contributing to certain players' salary.
 
-## tl;dr [See the app now!](http://3.21.186.80:3838/nba-payroll/)
+## tl;dr [See the app now!](http://3.21.186.80:3838/nba-payroll/) 
+*Link above is no longer available, but there are visualisations below.*
 
 <br>
 
